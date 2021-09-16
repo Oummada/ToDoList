@@ -10,8 +10,8 @@ if (localStorage.getItem("list") === null) {
 }
 addbtn.addEventListener("click", () => {
   if (input.value === "") return;
-  counter++;
-  let item = { id: counter, content: input.value };
+  const theid = String(Date.now());
+  let item = { id: theid, content: input.value };
 
   //////display in window
   let html = `
@@ -25,7 +25,7 @@ addbtn.addEventListener("click", () => {
   >
     <div>${item.id} : ${item.content}</div>
     <div class="d-flex">
-      <button data-id=${item.id} class="btn btn-outline-danger mx-1">delete</button>
+      <button data-id=${item.id} class="btn delete_btn btn-outline-danger mx-1">delete</button>
       <button class="btn btn-outline-primary mx-1">update</button>
       <button class="btn btn-outline-warning mx-1">check</button>
     </div>
@@ -42,7 +42,7 @@ addbtn.addEventListener("click", () => {
   fromLocal.push(item);
   localStorage.setItem("list", JSON.stringify(fromLocal));
   ///emptying the input
-  input.value !== " ";
+  input.value = "";
 });
 
 const renderlist = function () {
@@ -70,10 +70,15 @@ const renderlist = function () {
     });
 };
 renderlist();
-
 document.querySelector(".list_container").addEventListener("click", (e) => {
   if (e.target.classList.contains("delete_btn")) {
+         ///updating the ui
+    e.target.parentElement.parentElement.remove();
+    //updating the local storage
     const id = e.target.dataset.id;
+    let oldarray = JSON.parse(localStorage.getItem("list"));
+    const newArray = oldarray.filter((item) => item.id != id);
+    localStorage.setItem("list", JSON.stringify(newArray));
   }
 });
 
