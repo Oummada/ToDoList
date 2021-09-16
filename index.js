@@ -18,12 +18,14 @@ const updateui = function (item) {
       d-flex
       justify-content-between
     "
-  >
-    <div class="">${item.id} : ${item.content}</div>
-    <div class=" d-flex">
+  > 
+    <div class="content">${item.id} : ${item.content}
+  
+    </div>
+    <div class="d-flex">
       <button data-id=${item.id} class="btn delete_btn btn-outline-danger mx-1">delete</button>
       <button data-id=${item.id} class="btn updatebtn btn-outline-primary mx-1">update</button>
-      <button class="btn btn-outline-warning mx-1">check</button>
+      <button data-id=${item.id} class="btn btnCheck btn-outline-warning mx-1">check</button>
     </div>
   </li>
 `;
@@ -37,7 +39,6 @@ addbtn.addEventListener("click", () => {
   //////display in window
   updateui(item);
   /// register to local
-
   if (localStorage.getItem("list") === null) {
     localStorage.setItem("list", JSON.stringify([]));
   }
@@ -82,8 +83,8 @@ document
       );
 
       input.value = currentItem.content;
+      document.querySelector(".editOptions").classList.remove("d-none");
     }
-    document.querySelector(".editOptions").classList.remove("d-none");
   });
 
 document.querySelector(".editbtn").addEventListener("click", () => {
@@ -98,6 +99,8 @@ document.querySelector(".editbtn").addEventListener("click", () => {
   );
   it.parentElement.previousElementSibling.innerHTML = `${currentElementUpdates} : ${input.value} `;
 });
+
+/// cancel
 document.querySelector(".cancelbtn").addEventListener("click", function () {
   input.value = "";
   document.querySelector(".editOptions").classList.add("d-none");
@@ -105,3 +108,12 @@ document.querySelector(".cancelbtn").addEventListener("click", function () {
 /// delete from  local storage
 /// update from local storage
 /// check form local storage true or false
+
+document.querySelector(".list_container").addEventListener("click", (e) => {
+  if (e.target.classList.contains("btnCheck")) {
+    const checkid = e.target.dataset.id;
+    e.target.parentElement.previousElementSibling.innerHTML +=
+      ' <hr class="hr">';
+  }
+  e.target.classList.add("d-none");
+});
