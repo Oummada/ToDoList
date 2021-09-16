@@ -8,12 +8,8 @@ let list = [];
 if (localStorage.getItem("list") === null) {
   localStorage.setItem("list", JSON.stringify([]));
 }
-addbtn.addEventListener("click", () => {
-  if (input.value === "") return;
-  const theid = String(Date.now());
-  let item = { id: theid, content: input.value };
 
-  //////display in window
+const updateui = function (item) {
   let html = `
     <li
     class="
@@ -26,13 +22,20 @@ addbtn.addEventListener("click", () => {
     <div>${item.id} : ${item.content}</div>
     <div class="d-flex">
       <button data-id=${item.id} class="btn delete_btn btn-outline-danger mx-1">delete</button>
-      <button class="btn btn-outline-primary mx-1">update</button>
+      <button data-id=${item.id} class="btn updatebtn btn-outline-primary mx-1">update</button>
       <button class="btn btn-outline-warning mx-1">check</button>
     </div>
   </li>
 `;
   container.innerHTML += html;
+};
+addbtn.addEventListener("click", () => {
+  if (input.value === "") return;
+  const theid = String(Date.now());
+  let item = { id: theid, content: input.value };
 
+  //////display in window
+  updateui(item);
   /// register to local
 
   if (localStorage.getItem("list") === null) {
@@ -49,30 +52,15 @@ const renderlist = function () {
   const items = JSON.parse(localStorage.getItem("list"));
   if (items !== null)
     items.forEach((item) => {
-      let html = `
-    <li
-    class="
-      list-group-item
-      align-items-center
-      d-flex
-      justify-content-between
-    "
-  >
-    <div>${item.id} : ${item.content}</div>
-    <div class="target d-flex">
-      <button data-id=${item.id} class="btn delete_btn btn-outline-danger mx-1">delete</button>
-      <button class="btn btn-outline-primary mx-1">update</button>
-      <button class="btn btn-outline-warning mx-1">check</button>
-    </div>
-  </li>
-    `;
-      container.innerHTML += html;
+      updateui(item);
     });
 };
 renderlist();
+
+/// delete
 document.querySelector(".list_container").addEventListener("click", (e) => {
   if (e.target.classList.contains("delete_btn")) {
-         ///updating the ui
+    ///updating the ui
     e.target.parentElement.parentElement.remove();
     //updating the local storage
     const id = e.target.dataset.id;
@@ -82,6 +70,29 @@ document.querySelector(".list_container").addEventListener("click", (e) => {
   }
 });
 
+/// update
+let currentElementUpdates;
+document
+  .querySelector(".list_container")
+  .addEventListener("click", function (e) {
+    if (e.target.classList.contains("updatebtn")) {
+      currentElementUpdates = e.target.dataset.id;
+      const currentItem = JSON.parse(localStorage.getItem("list")).find(
+        (item) => item.id == currentElementUpdates
+      );
+      console.log(currentItem);
+      input.value = currentItem.content;
+    }
+    document.querySelector(".editOptions").classList.remove("d-none");
+  });
+
+document.querySelector(".editbtn").addEventListener("click", () => {
+  console.log(currentElementUpdates);
+});
+document.querySelector(".cancelbtn").addEventListener("click", function () {
+  input.value = "";
+  document.querySelector(".editOptions").classList.add("d-none");
+});
 /// delete from  local storage
 /// update from local storage
 /// check form local storage true or false
