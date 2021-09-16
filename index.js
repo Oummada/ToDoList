@@ -11,7 +11,7 @@ if (localStorage.getItem("list") === null) {
 
 const updateui = function (item) {
   let html = `
-    <li
+  <li
     class="
       list-group-item
       align-items-center
@@ -19,8 +19,8 @@ const updateui = function (item) {
       justify-content-between
     "
   >
-    <div>${item.id} : ${item.content}</div>
-    <div class="d-flex">
+    <div class="">${item.id} : ${item.content}</div>
+    <div class=" d-flex">
       <button data-id=${item.id} class="btn delete_btn btn-outline-danger mx-1">delete</button>
       <button data-id=${item.id} class="btn updatebtn btn-outline-primary mx-1">update</button>
       <button class="btn btn-outline-warning mx-1">check</button>
@@ -80,7 +80,7 @@ document
       const currentItem = JSON.parse(localStorage.getItem("list")).find(
         (item) => item.id == currentElementUpdates
       );
-      console.log(currentItem);
+
       input.value = currentItem.content;
     }
     document.querySelector(".editOptions").classList.remove("d-none");
@@ -88,6 +88,11 @@ document
 
 document.querySelector(".editbtn").addEventListener("click", () => {
   console.log(currentElementUpdates);
+  const list = JSON.parse(localStorage.getItem("list"));
+  const something = list.find((item) => item.id == currentElementUpdates);
+  something.content = input.value;
+  localStorage.setItem("list", JSON.stringify(list));
+  
 });
 document.querySelector(".cancelbtn").addEventListener("click", function () {
   input.value = "";
