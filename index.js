@@ -20,12 +20,18 @@ const updateui = function (item) {
     "
   > 
     <div class="content">${item.id} : ${item.content}
-  
+        ${item.check === true ? ' <hr class="hr">' : ""}
     </div>
     <div class="d-flex">
-      <button data-id=${item.id} class="btn delete_btn btn-outline-danger mx-1">delete</button>
-      <button data-id=${item.id} class="btn updatebtn btn-outline-primary mx-1">update</button>
-      <button data-id=${item.id} class="btn btnCheck btn-outline-warning mx-1">check</button>
+      <button data-id=${
+        item.id
+      } class="btn delete_btn btn-outline-danger mx-1">delete</button>
+      <button data-id=${
+        item.id
+      } class="btn updatebtn btn-outline-primary mx-1">update</button>
+      <button data-id=${
+        item.id
+      } class="btn btnCheck btn-outline-warning mx-1">check</button>
     </div>
   </li>
 `;
@@ -34,8 +40,7 @@ const updateui = function (item) {
 addbtn.addEventListener("click", () => {
   if (input.value === "") return;
   const theid = String(Date.now());
-  let item = { id: theid, content: input.value };
-
+  let item = { id: theid, content: input.value, check: false };
   //////display in window
   updateui(item);
   /// register to local
@@ -51,9 +56,13 @@ addbtn.addEventListener("click", () => {
 
 const renderlist = function () {
   const items = JSON.parse(localStorage.getItem("list"));
+
   if (items !== null)
     items.forEach((item) => {
       updateui(item);
+      if (item.check === true) {
+        document.querySelector(`.updatebtn[data-id="${item.id}"]`).remove();
+      }
     });
 };
 renderlist();
@@ -114,6 +123,12 @@ document.querySelector(".list_container").addEventListener("click", (e) => {
     const checkid = e.target.dataset.id;
     e.target.parentElement.previousElementSibling.innerHTML +=
       ' <hr class="hr">';
+    e.target.classList.add("d-none");
+
+    /// setting checker to true in the local storage
+    const list = JSON.parse(localStorage.getItem("list"));
+    const found = list.find((item) => item.id == checkid);
+    found.check = true;
+    localStorage.setItem("list", JSON.stringify(list));
   }
-  e.target.classList.add("d-none");
 });
