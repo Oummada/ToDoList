@@ -92,7 +92,11 @@ document.querySelector(".editbtn").addEventListener("click", () => {
   const something = list.find((item) => item.id == currentElementUpdates);
   something.content = input.value;
   localStorage.setItem("list", JSON.stringify(list));
-  
+
+  const it = document.querySelector(
+    ` .updatebtn[data-id="${currentElementUpdates}"]`
+  );
+  it.parentElement.previousElementSibling.innerHTML = `${currentElementUpdates} : ${input.value} `;
 });
 document.querySelector(".cancelbtn").addEventListener("click", function () {
   input.value = "";
