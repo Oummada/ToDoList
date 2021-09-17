@@ -14,7 +14,6 @@
     />
     <!-- <script defer src="./index.js"></script> -->
     <!-- <script defer src="./hello.js"></script> -->
-    <script defer type="module" src="./home.js"></script>
   </head>
   <body>
     <div class="container mt-5">
@@ -28,6 +27,7 @@
             aria-label="Recipient's username"
             aria-describedby="button-addon2"
           />
+
           <button
             class="addbtn btn btn-outline-secondary"
             type="button"
@@ -35,15 +35,25 @@
           >
             Add
           </button>
+
           <div class="editOptions mx-1 d-none">
             <button class="editbtn btn btn-success">edit</button>
             <button class="cancelbtn btn btn-secondary">cancel</button>
           </div>
         </div>
+        <input
+          style="width: 200px"
+          type="text"
+          class="mb-3 form-control searchInput container"
+          placeholder="search for a task"
+          aria-label="Recipient's username"
+          aria-describedby="button-addon2"
+        />
         <div class="col">
-          <ul class="list_container list-group"></ul>
+          <ul class="thelist list_container list-group"></ul>
         </div>
       </div>
     </div>
   </body>
 </html>
+<script async type="module" src="./home.js"></script>

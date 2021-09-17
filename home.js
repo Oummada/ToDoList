@@ -43,6 +43,7 @@ const displayContent = function (data) {
   let html = `
     <li
       class="
+      item
         list-group-item
         align-items-center
         d-flex
@@ -138,3 +139,6 @@ container.addEventListener("click", (e) => {
 });
 
 //// check and search
+// document.querySelector(".searchInput").addEventListener("input", () => {});
+const items = document.querySelector(".thelist").children;
+console.log(items);
