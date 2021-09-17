@@ -3023,11 +3023,13 @@ document.querySelector(".addbtn").addEventListener("click", function () {
 
   _axiosconfig.default.post("list.json", item).then(function (res) {
     console.log(res);
-  });
+  }); //display item
 
-  displayContent(item);
+
+  displayContent(item); //emptying input
+
   input.value = "";
-}); ///getting the data
+}); ///getting the data and putting it in alldata state
 
 _axiosconfig.default.get("/list.json").then(function (_ref) {
   var data = _ref.data;
@@ -3040,19 +3042,39 @@ _axiosconfig.default.get("/list.json").then(function (_ref) {
 
     value.id = key;
     alldata.push(value);
-  }
+  } ///displaying it when page reloads
+
 
   alldata.forEach(function (item) {
     displayContent(item);
   });
-});
+}); // function that displays the content
 
-console.log(alldata); //displaying the data
 
 var displayContent = function displayContent(data) {
   var html = "\n    <li\n      class=\"\n        list-group-item\n        align-items-center\n        d-flex\n        justify-content-between\n      \"\n    > \n      <div class=\"content\">".concat(data.id, " : ").concat(data.content, "\n      </div>\n      <div class=\"d-flex\">\n        <button data-id=").concat(data.id, " class=\"btn delete_btn btn-outline-danger mx-1\">delete</button>\n        <button data-id=").concat(data.id, " class=\"btn updatebtn btn-outline-primary mx-1\">update</button>\n        <button data-id=").concat(data.id, " class=\"btn btnCheck btn-outline-warning mx-1\">check</button>\n      </div>\n    </li>\n  ");
   container.innerHTML += html;
-};
+}; /// delete btn
+
+
+container.addEventListener("click", function (e) {
+  if (e.target.classList.contains("delete_btn")) {
+    if (window.confirm("are you sure")) {
+      //delete from db
+      var idTarget = e.target.dataset.id;
+
+      _axiosconfig.default.delete("./list/" + idTarget + ".json").then(function (res) {
+        var newTable = alldata.filter(function (item) {
+          return item.id !== idTarget;
+        });
+        alldata = newTable;
+      }); ///delete from view
+
+
+      document.querySelector(".delete_btn[data-id=\"".concat(idTarget, "\"]")).parentElement.parentElement.remove();
+    }
+  }
+});
 },{"./util/axiosconfig.js":"util/axiosconfig.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -3081,7 +3103,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50081" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62781" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

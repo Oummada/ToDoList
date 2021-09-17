@@ -4,6 +4,7 @@ import axios from "./util/axiosconfig.js";
 
 const input = document.querySelector(".input");
 const container = document.querySelector(".list_container");
+
 let alldata = [];
 
 ///add
@@ -35,7 +36,6 @@ axios.get("/list.json").then(({ data }) => {
   });
 });
 
-
 // function that displays the content
 const displayContent = function (data) {
   let html = `
@@ -58,3 +58,22 @@ const displayContent = function (data) {
   `;
   container.innerHTML += html;
 };
+
+/// delete btn
+container.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete_btn")) {
+    if (window.confirm("are you sure")) {
+      //delete from db
+      const idTarget = e.target.dataset.id;
+      axios.delete("./list/" + idTarget + ".json").then((res) => {
+        const newTable = alldata.filter((item) => item.id !== idTarget);
+        alldata = newTable;
+      });
+
+      ///delete from view
+      document
+        .querySelector(`.delete_btn[data-id="${idTarget}"]`)
+        .parentElement.parentElement.remove();
+    }
+  }
+});
