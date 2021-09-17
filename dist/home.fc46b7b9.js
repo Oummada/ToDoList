@@ -3111,7 +3111,7 @@ document.querySelector(".editbtn").addEventListener("click", function () {
   newdata.content = input.value;
   document.querySelector(".updatebtn[data-id=\"".concat(currentId, "\"]")).parentElement.previousElementSibling.innerHTML = "".concat(newdata.id, " : ").concat(newdata.content);
   input.value = "";
-}); ////
+}); //// check
 
 container.addEventListener("click", function (e) {
   if (e.target.classList.contains("btnCheck")) {
@@ -3131,7 +3131,7 @@ container.addEventListener("click", function (e) {
     e.target.parentElement.previousElementSibling.innerHTML += '<hr class="hr">';
     e.target.remove();
   }
-}); //// check and search
+}); //// search
 
 document.querySelector(".searchInput").addEventListener("keyup", function () {
   var items = document.querySelectorAll(".item");

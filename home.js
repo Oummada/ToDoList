@@ -123,7 +123,7 @@ document.querySelector(".editbtn").addEventListener("click", () => {
   input.value = "";
 });
 
-////
+//// check
 container.addEventListener("click", (e) => {
   if (e.target.classList.contains("btnCheck")) {
     const elementid = e.target.dataset.id;
@@ -139,7 +139,7 @@ container.addEventListener("click", (e) => {
   }
 });
 
-//// check and search
+//// search
 document.querySelector(".searchInput").addEventListener("keyup", () => {
   const items = document.querySelectorAll(".item");
   console.log(search.value);
