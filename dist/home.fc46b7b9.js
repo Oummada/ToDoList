@@ -3018,15 +3018,17 @@ document.querySelector(".addbtn").addEventListener("click", function () {
   if (input.value === "") return;
   var item = {
     id: String(Date.now()),
-    content: input.value
+    content: input.value,
+    check: false
   };
 
   _axiosconfig.default.post("list.json", item).then(function (res) {
-    console.log(res);
+    console.log(res.data.name);
+    item.id = res.data.name;
+    displayContent(item);
   }); //display item
+  //emptying input
 
-
-  displayContent(item); //emptying input
 
   input.value = "";
 }); ///getting the data and putting it in alldata state
@@ -3106,6 +3108,12 @@ document.querySelector(".editbtn").addEventListener("click", function () {
   });
   newdata.content = input.value;
   document.querySelector(".updatebtn[data-id=\"".concat(currentId, "\"]")).parentElement.previousElementSibling.innerHTML = "".concat(newdata.id, " : ").concat(newdata.content);
+}); ////
+
+container.addEventListener("click", function (e) {
+  if (e.target.classList.contains("btnCheck")) {
+    console.log(e.target.dataset.id);
+  }
 }); //// check and search
 },{"./util/axiosconfig.js":"util/axiosconfig.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];

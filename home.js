@@ -13,12 +13,14 @@ document.querySelector(".addbtn").addEventListener("click", () => {
   const item = {
     id: String(Date.now()),
     content: input.value,
+    check: false,
   };
   axios.post("list.json", item).then((res) => {
-    console.log(res);
+    console.log(res.data.name);
+    item.id = res.data.name;
+    displayContent(item);
   });
   //display item
-  displayContent(item);
   //emptying input
   input.value = "";
 });
@@ -108,6 +110,11 @@ document.querySelector(".editbtn").addEventListener("click", () => {
   ).parentElement.previousElementSibling.innerHTML = `${newdata.id} : ${newdata.content}`;
 });
 
-
+////
+container.addEventListener("click", (e) => {
+  if (e.target.classList.contains("btnCheck")) {
+    console.log(e.target.dataset.id);
+  }
+});
 
 //// check and search
