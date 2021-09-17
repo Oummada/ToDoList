@@ -1,7 +1,7 @@
 "use strict";
 
 import axios from "./util/axiosconfig.js";
-
+const search = document.querySelector(".searchInput");
 const input = document.querySelector(".input");
 const container = document.querySelector(".list_container");
 
@@ -18,6 +18,7 @@ document.querySelector(".addbtn").addEventListener("click", () => {
   axios.post("list.json", item).then((res) => {
     console.log(res.data.name);
     item.id = res.data.name;
+    alldata.push(item);
     displayContent(item);
   });
   //display item
@@ -50,7 +51,7 @@ const displayContent = function (data) {
         justify-content-between
       "
     > 
-      <div class="content">${data.id} : ${data.content}
+      <div class="content"> ${data.content}
       ${data.check === true ? '<hr class="hr">' : ""}
       </div>
       <div class="d-flex">
@@ -139,6 +140,18 @@ container.addEventListener("click", (e) => {
 });
 
 //// check and search
-// document.querySelector(".searchInput").addEventListener("input", () => {});
-const items = document.querySelector(".thelist").children;
-console.log(items);
+document.querySelector(".searchInput").addEventListener("keyup", () => {
+  const items = document.querySelectorAll(".item");
+  console.log(search.value);
+  items.forEach((item) => {
+    if (!item.firstElementChild.textContent.includes(search.value)) {
+      item.classList.add("d-none");
+    }
+  });
+  if (search.value === "") {
+    container.innerHTML = "";
+    alldata.forEach((item) => {
+      displayContent(item);
+    });
+  }
+});
