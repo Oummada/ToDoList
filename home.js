@@ -50,11 +50,21 @@ const displayContent = function (data) {
       "
     > 
       <div class="content">${data.id} : ${data.content}
+      ${data.check === true ? '<hr class="hr">' : ""}
       </div>
       <div class="d-flex">
-        <button data-id=${data.id} class="btn delete_btn btn-outline-danger mx-1">delete</button>
-        <button data-id=${data.id} class="btn updatebtn btn-outline-primary mx-1">update</button>
-        <button data-id=${data.id} class="btn btnCheck btn-outline-warning mx-1">check</button>
+        <button data-id=${
+          data.id
+        } class="btn delete_btn btn-outline-danger mx-1">delete</button>
+        <button data-id=${
+          data.id
+        } class="btn updatebtn btn-outline-primary mx-1">update</button>
+       ${
+         data.check === false
+           ? `<button data-id=${data.id} class="btn btnCheck btn-outline-warning mx-1">check</button>`
+           : ""
+       }
+        
       </div>
     </li>
   `;
@@ -108,12 +118,22 @@ document.querySelector(".editbtn").addEventListener("click", () => {
   document.querySelector(
     `.updatebtn[data-id="${currentId}"]`
   ).parentElement.previousElementSibling.innerHTML = `${newdata.id} : ${newdata.content}`;
+  input.value = "";
 });
 
 ////
 container.addEventListener("click", (e) => {
   if (e.target.classList.contains("btnCheck")) {
-    console.log(e.target.dataset.id);
+    const elementid = e.target.dataset.id;
+    const data = alldata.find((item) => item.id == elementid);
+    data.check = true;
+    axios.put("list/" + elementid + ".json", data).then((res) => {
+      const data = alldata.find((item) => item.id == elementid);
+      data.check = true;
+    });
+    e.target.parentElement.previousElementSibling.innerHTML +=
+      '<hr class="hr">';
+    e.target.remove();
   }
 });
 

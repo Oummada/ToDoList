@@ -3054,7 +3054,7 @@ _axiosconfig.default.get("/list.json").then(function (_ref) {
 
 
 var displayContent = function displayContent(data) {
-  var html = "\n    <li\n      class=\"\n        list-group-item\n        align-items-center\n        d-flex\n        justify-content-between\n      \"\n    > \n      <div class=\"content\">".concat(data.id, " : ").concat(data.content, "\n      </div>\n      <div class=\"d-flex\">\n        <button data-id=").concat(data.id, " class=\"btn delete_btn btn-outline-danger mx-1\">delete</button>\n        <button data-id=").concat(data.id, " class=\"btn updatebtn btn-outline-primary mx-1\">update</button>\n        <button data-id=").concat(data.id, " class=\"btn btnCheck btn-outline-warning mx-1\">check</button>\n      </div>\n    </li>\n  ");
+  var html = "\n    <li\n      class=\"\n        list-group-item\n        align-items-center\n        d-flex\n        justify-content-between\n      \"\n    > \n      <div class=\"content\">".concat(data.id, " : ").concat(data.content, "\n      ").concat(data.check === true ? '<hr class="hr">' : "", "\n      </div>\n      <div class=\"d-flex\">\n        <button data-id=").concat(data.id, " class=\"btn delete_btn btn-outline-danger mx-1\">delete</button>\n        <button data-id=").concat(data.id, " class=\"btn updatebtn btn-outline-primary mx-1\">update</button>\n       ").concat(data.check === false ? "<button data-id=".concat(data.id, " class=\"btn btnCheck btn-outline-warning mx-1\">check</button>") : "", "\n        \n      </div>\n    </li>\n  ");
   container.innerHTML += html;
 }; /// delete btn
 
@@ -3108,11 +3108,26 @@ document.querySelector(".editbtn").addEventListener("click", function () {
   });
   newdata.content = input.value;
   document.querySelector(".updatebtn[data-id=\"".concat(currentId, "\"]")).parentElement.previousElementSibling.innerHTML = "".concat(newdata.id, " : ").concat(newdata.content);
+  input.value = "";
 }); ////
 
 container.addEventListener("click", function (e) {
   if (e.target.classList.contains("btnCheck")) {
-    console.log(e.target.dataset.id);
+    var elementid = e.target.dataset.id;
+    var data = alldata.find(function (item) {
+      return item.id == elementid;
+    });
+    data.check = true;
+
+    _axiosconfig.default.put("list/" + elementid + ".json", data).then(function (res) {
+      var data = alldata.find(function (item) {
+        return item.id == elementid;
+      });
+      data.check = true;
+    });
+
+    e.target.parentElement.previousElementSibling.innerHTML += '<hr class="hr">';
+    e.target.remove();
   }
 }); //// check and search
 },{"./util/axiosconfig.js":"util/axiosconfig.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
