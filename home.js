@@ -77,3 +77,37 @@ container.addEventListener("click", (e) => {
     }
   }
 });
+
+// update btn
+let currentId;
+container.addEventListener("click", (e) => {
+  if (e.target.classList.contains("updatebtn")) {
+    const targetId = e.target.dataset.id;
+    currentId = targetId;
+    document.querySelector(".editOptions").classList.remove("d-none");
+    const currentObject = alldata.find((item) => item.id === currentId);
+    console.log(currentObject);
+    input.value = currentObject.content;
+  }
+});
+
+document.querySelector(".cancelbtn").addEventListener("click", () => {
+  input.value = "";
+  document.querySelector(".editOptions").classList.add("d-none");
+});
+document.querySelector(".editbtn").addEventListener("click", () => {
+  const updatedcontent = {
+    id: currentId,
+    content: input.value,
+  };
+  axios.put("list/" + currentId + ".json", updatedcontent);
+  const newdata = alldata.find((item) => item.id === currentId);
+  newdata.content = input.value;
+  document.querySelector(
+    `.updatebtn[data-id="${currentId}"]`
+  ).parentElement.previousElementSibling.innerHTML = `${newdata.id} : ${newdata.content}`;
+});
+
+
+
+//// check and search

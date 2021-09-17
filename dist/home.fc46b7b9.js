@@ -3074,7 +3074,39 @@ container.addEventListener("click", function (e) {
       document.querySelector(".delete_btn[data-id=\"".concat(idTarget, "\"]")).parentElement.parentElement.remove();
     }
   }
+}); // update btn
+
+var currentId;
+container.addEventListener("click", function (e) {
+  if (e.target.classList.contains("updatebtn")) {
+    var targetId = e.target.dataset.id;
+    currentId = targetId;
+    document.querySelector(".editOptions").classList.remove("d-none");
+    var currentObject = alldata.find(function (item) {
+      return item.id === currentId;
+    });
+    console.log(currentObject);
+    input.value = currentObject.content;
+  }
 });
+document.querySelector(".cancelbtn").addEventListener("click", function () {
+  input.value = "";
+  document.querySelector(".editOptions").classList.add("d-none");
+});
+document.querySelector(".editbtn").addEventListener("click", function () {
+  var updatedcontent = {
+    id: currentId,
+    content: input.value
+  };
+
+  _axiosconfig.default.put("list/" + currentId + ".json", updatedcontent);
+
+  var newdata = alldata.find(function (item) {
+    return item.id === currentId;
+  });
+  newdata.content = input.value;
+  document.querySelector(".updatebtn[data-id=\"".concat(currentId, "\"]")).parentElement.previousElementSibling.innerHTML = "".concat(newdata.id, " : ").concat(newdata.content);
+}); //// check and search
 },{"./util/axiosconfig.js":"util/axiosconfig.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -3103,7 +3135,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62781" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54913" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
