@@ -5167,46 +5167,7 @@ function registerCoreComponents(variant) {
 
 
 registerCoreComponents();
-},{"@firebase/component":"node_modules/@firebase/component/dist/index.esm.js","@firebase/logger":"node_modules/@firebase/logger/dist/index.esm.js","@firebase/util":"node_modules/@firebase/util/dist/index.esm.js"}],"node_modules/firebase/app/dist/index.esm.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _app = require("@firebase/app");
-
-Object.keys(_app).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (key in exports && exports[key] === _app[key]) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _app[key];
-    }
-  });
-});
-var name = "firebase";
-var version = "9.0.2";
-/**
- * @license
- * Copyright 2020 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-(0, _app.registerVersion)(name, version, 'app');
-},{"@firebase/app":"node_modules/@firebase/app/dist/index.esm2017.js"}],"node_modules/@firebase/auth/dist/esm2017/index-8fbd02b6.js":[function(require,module,exports) {
+},{"@firebase/component":"node_modules/@firebase/component/dist/index.esm.js","@firebase/logger":"node_modules/@firebase/logger/dist/index.esm.js","@firebase/util":"node_modules/@firebase/util/dist/index.esm.js"}],"node_modules/@firebase/auth/dist/esm2017/index-8fbd02b6.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17722,27 +17683,63 @@ Object.keys(_auth).forEach(function (key) {
     }
   });
 });
-},{"@firebase/auth":"node_modules/@firebase/auth/dist/esm2017/index.js"}],"util/indexfireBase.js":[function(require,module,exports) {
+},{"@firebase/auth":"node_modules/@firebase/auth/dist/esm2017/index.js"}],"node_modules/firebase/app/dist/index.esm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.auth = exports.default = void 0;
 
-require("regenerator-runtime/runtime");
+var _app = require("@firebase/app");
 
-var _app = _interopRequireWildcard(require("firebase/app"));
+Object.keys(_app).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _app[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _app[key];
+    }
+  });
+});
+var name = "firebase";
+var version = "9.0.2";
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-require("firebase/auth");
+(0, _app.registerVersion)(name, version, 'app');
+},{"@firebase/app":"node_modules/@firebase/app/dist/index.esm2017.js"}],"util/indexfireBase.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var firebase = _interopRequireWildcard(require("firebase/app"));
+
+var _auth = require("firebase/auth");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Import the functions you need from the SDKs you need
-require("firebase/auth");
-
+// import "regenerator-runtime/runtime";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
@@ -17756,37 +17753,35 @@ var firebaseConfig = {
   appId: "1:758729008714:web:ecbb0033b4e1cdc0d4e8b3"
 }; // Initialize Firebase
 
-var _default = (0, _app.initializeApp)(firebaseConfig); //exporter notre base de donnes
-//export the other app
+var app = firebase.initializeApp(firebaseConfig); //exporter notre base de données
 
+var _default = app; //export the auth app
 
 exports.default = _default;
-
-var auth = _app.default.auth();
-
-exports.auth = auth;
-},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","firebase/app":"node_modules/firebase/app/dist/index.esm.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js"}],"register.js":[function(require,module,exports) {
+},{"firebase/app":"node_modules/firebase/app/dist/index.esm.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js"}],"register.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
+
+var _auth = require("firebase/auth");
 
 var _indexfireBase = _interopRequireDefault(require("./util/indexfireBase"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var form = document.querySelector(".form");
+var auth = (0, _auth.getAuth)();
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   var email = form["email"].value;
   var name = form["name"].value;
   var password = form["password"].value;
   var repeatedpassword = form["repeatedpassword"].value;
-
-  _indexfireBase.default.createUserWithEmailAndPassword(email, password).then(function (cred) {
+  (0, _auth.createUserWithEmailAndPassword)(auth, email, password).then(function (cred) {
     console.log(cred);
   });
 });
-},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","./util/indexfireBase":"util/indexfireBase.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js","./util/indexfireBase":"util/indexfireBase.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -17814,7 +17809,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54212" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61065" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

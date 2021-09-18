@@ -1,10 +1,7 @@
 // Import the functions you need from the SDKs you need
-import "regenerator-runtime/runtime";
-
-import { initializeApp } from "firebase/app";
-import "firebase/auth";
-require("firebase/auth");
-import firebase from "firebase/app";
+// import "regenerator-runtime/runtime";
+import * as firebase from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -21,9 +18,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export default initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 
-//exporter notre base de donnes
+//exporter notre base de données
+export default app;
+//export the auth app
 
-//export the other app
-export const auth = firebase.auth();
