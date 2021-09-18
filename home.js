@@ -1,4 +1,5 @@
 "use strict";
+import "regenerator-runtime/runtime";
 
 import axios from "./util/axiosconfig.js";
 const search = document.querySelector(".searchInput");
