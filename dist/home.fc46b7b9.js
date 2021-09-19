@@ -3012,6 +3012,13 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+// const auth = getAuth();
+////logout
+var logout = document.querySelector(".logoutbtn");
+logout.addEventListener("click", function () {
+  alert("hi sisters");
+});
 var search = document.querySelector(".searchInput");
 var input = document.querySelector(".input");
 var container = document.querySelector(".list_container");

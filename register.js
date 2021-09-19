@@ -5,6 +5,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "./util/indexfireBase";
 const form = document.querySelector(".form");
 const auth = getAuth();
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const email = form["email"].value;

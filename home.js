@@ -1,6 +1,15 @@
 "use strict";
 import "regenerator-runtime/runtime";
 
+// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+// const auth = getAuth();
+
+////logout
+const logout = document.querySelector(".logoutbtn");
+logout.addEventListener("click", () => {
+  alert("hi sisters");
+});
+
 import axios from "./util/axiosconfig.js";
 const search = document.querySelector(".searchInput");
 const input = document.querySelector(".input");
