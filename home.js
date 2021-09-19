@@ -8,6 +8,7 @@ const search = document.querySelector(".searchInput");
 const input = document.querySelector(".input");
 const container = document.querySelector(".list_container");
 let alldata = [];
+let currentuser;
 console.log(alldata);
 
 ////logout
@@ -20,8 +21,9 @@ logout.addEventListener("click", () => {
 
 ////user activitiy
 auth.onAuthStateChanged((user) => {
+  document.querySelector(".main").classList.remove("d-none");
   if (user) {
-    console.log("user logged in");
+    currentuser = user.uid;
     // currentuser = user.uid;
     ///getting the data and putting it in alldata state
     axios.get("/list.json").then(({ data }) => {
@@ -36,8 +38,9 @@ auth.onAuthStateChanged((user) => {
       });
     });
   }
-  if (!user) window.location.href = "./auth/login.js";
-  currentuser = "";
+  if (!user) {
+    document.querySelector(".main").classList.add("d-none");
+  }
 });
 
 ///add
@@ -135,13 +138,15 @@ document.querySelector(".editbtn").addEventListener("click", () => {
   const updatedcontent = {
     id: currentId,
     content: input.value,
+    check: false,
+    userid: currentuser,
   };
   axios.put("list/" + currentId + ".json", updatedcontent);
   const newdata = alldata.find((item) => item.id === currentId);
   newdata.content = input.value;
   document.querySelector(
     `.updatebtn[data-id="${currentId}"]`
-  ).parentElement.previousElementSibling.innerHTML = `${newdata.id} : ${newdata.content}`;
+  ).parentElement.previousElementSibling.innerHTML = ` ${newdata.content}`;
   input.value = "";
 });
 

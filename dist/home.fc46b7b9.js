@@ -19905,6 +19905,7 @@ var search = document.querySelector(".searchInput");
 var input = document.querySelector(".input");
 var container = document.querySelector(".list_container");
 var alldata = [];
+var currentuser;
 console.log(alldata); ////logout
 
 var logout = document.querySelector(".logoutbtn");
@@ -19915,8 +19916,10 @@ logout.addEventListener("click", function () {
 }); ////user activitiy
 
 auth.onAuthStateChanged(function (user) {
+  document.querySelector(".main").classList.remove("d-none");
+
   if (user) {
-    console.log("user logged in"); // currentuser = user.uid;
+    currentuser = user.uid; // currentuser = user.uid;
     ///getting the data and putting it in alldata state
 
     _axiosconfig.default.get("/list.json").then(function (_ref) {
@@ -19939,8 +19942,9 @@ auth.onAuthStateChanged(function (user) {
     });
   }
 
-  if (!user) window.location.href = "./auth/login.js";
-  currentuser = "";
+  if (!user) {
+    document.querySelector(".main").classList.add("d-none");
+  }
 }); ///add
 
 document.querySelector(".addbtn").addEventListener("click", function () {
@@ -20009,7 +20013,9 @@ document.querySelector(".cancelbtn").addEventListener("click", function () {
 document.querySelector(".editbtn").addEventListener("click", function () {
   var updatedcontent = {
     id: currentId,
-    content: input.value
+    content: input.value,
+    check: false,
+    userid: currentuser
   };
 
   _axiosconfig.default.put("list/" + currentId + ".json", updatedcontent);
@@ -20018,7 +20024,7 @@ document.querySelector(".editbtn").addEventListener("click", function () {
     return item.id === currentId;
   });
   newdata.content = input.value;
-  document.querySelector(".updatebtn[data-id=\"".concat(currentId, "\"]")).parentElement.previousElementSibling.innerHTML = "".concat(newdata.id, " : ").concat(newdata.content);
+  document.querySelector(".updatebtn[data-id=\"".concat(currentId, "\"]")).parentElement.previousElementSibling.innerHTML = " ".concat(newdata.content);
   input.value = "";
 }); //// check
 
@@ -20086,7 +20092,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65231" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60265" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
