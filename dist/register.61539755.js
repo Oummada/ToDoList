@@ -17777,8 +17777,21 @@ form.addEventListener("submit", function (e) {
   var name = form["name"].value;
   var password = form["password"].value;
   var repeatedpassword = form["repeatedpassword"].value;
+
+  if (email === "" || name === "" || password === "") {
+    alert("please fill all info");
+    return;
+  }
+
+  if (password !== repeatedpassword) {
+    alert("passwords are not matched");
+    return;
+  }
+
   (0, _auth.createUserWithEmailAndPassword)(auth, email, password).then(function (cred) {
-    console.log(cred);
+    cred.user.displayName = name;
+    console.log(cred.user);
+    form.reset();
   });
 });
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js","./util/indexfireBase":"util/indexfireBase.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -17809,7 +17822,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61065" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52700" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

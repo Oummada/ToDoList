@@ -11,8 +11,17 @@ form.addEventListener("submit", (e) => {
   const name = form["name"].value;
   const password = form["password"].value;
   const repeatedpassword = form["repeatedpassword"].value;
-
+  if (email === "" || name === "" || password === "") {
+    alert("please fill all info");
+    return;
+  }
+  if (password !== repeatedpassword) {
+    alert("passwords are not matched");
+    return;
+  }
   createUserWithEmailAndPassword(auth, email, password).then((cred) => {
-    console.log(cred);
+    cred.user.displayName = name;
+    console.log(cred.user);
+    form.reset();
   });
 });
