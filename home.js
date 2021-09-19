@@ -24,8 +24,7 @@ auth.onAuthStateChanged((user) => {
   document.querySelector(".main").classList.remove("d-none");
   if (user) {
     currentuser = user.uid;
-    // currentuser = user.uid;
-    ///getting the data and putting it in alldata state
+    ///getting his own data and displaying it
     axios.get("/list.json").then(({ data }) => {
       const thedata = Object.entries(data);
       for (const [key, value] of thedata) {
@@ -39,6 +38,7 @@ auth.onAuthStateChanged((user) => {
     });
   }
   if (!user) {
+    ///if user doesnt exist
     document.querySelector(".main").classList.add("d-none");
   }
 });

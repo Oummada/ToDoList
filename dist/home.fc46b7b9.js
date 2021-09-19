@@ -19919,8 +19919,7 @@ auth.onAuthStateChanged(function (user) {
   document.querySelector(".main").classList.remove("d-none");
 
   if (user) {
-    currentuser = user.uid; // currentuser = user.uid;
-    ///getting the data and putting it in alldata state
+    currentuser = user.uid; ///getting his own data and displaying it
 
     _axiosconfig.default.get("/list.json").then(function (_ref) {
       var data = _ref.data;
@@ -19943,6 +19942,7 @@ auth.onAuthStateChanged(function (user) {
   }
 
   if (!user) {
+    ///if user doesnt exist
     document.querySelector(".main").classList.add("d-none");
   }
 }); ///add
