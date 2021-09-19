@@ -19911,7 +19911,7 @@ console.log(alldata); ////logout
 var logout = document.querySelector(".logoutbtn");
 logout.addEventListener("click", function () {
   auth.signOut().then(function () {
-    window.location.href = "./auth/login.js";
+    window.location.href = "./auth/login.html";
   });
 }); ////user activitiy
 
@@ -19939,6 +19939,8 @@ auth.onAuthStateChanged(function (user) {
         if (item.userid === user.uid) displayContent(item);
       });
     });
+
+    filter(alldata, user.uid);
   }
 
   if (!user) {
@@ -19968,7 +19970,6 @@ document.querySelector(".addbtn").addEventListener("click", function () {
 }); // function that displays the content
 
 var displayContent = function displayContent(data) {
-  console.log(currentuser, data.userid);
   var html = "\n    <li\n      class=\"\n      item\n        list-group-item\n        align-items-center\n        d-flex\n        justify-content-between\n      \"\n    > \n      <div class=\"content\"> ".concat(data.content, "\n      ").concat(data.check === true ? '<hr class="hr">' : "", "\n      </div>\n      <div class=\"d-flex\">\n        <button data-id=").concat(data.id, " class=\"btn delete_btn btn-outline-danger mx-1\">delete</button>\n        <button data-id=").concat(data.id, " class=\"btn updatebtn btn-outline-primary mx-1\">update</button>\n       ").concat(data.check === false ? "<button data-id=".concat(data.id, " class=\"btn btnCheck btn-outline-warning mx-1\">check</button>") : "", "\n        \n      </div>\n    </li>\n  ");
   container.innerHTML += html;
 }; /// delete btn
@@ -20048,22 +20049,24 @@ container.addEventListener("click", function (e) {
   }
 }); //// search
 
-document.querySelector(".searchInput").addEventListener("keyup", function () {
-  var items = document.querySelectorAll(".item");
-  console.log(search.value);
-  items.forEach(function (item) {
-    if (!item.firstElementChild.textContent.includes(search.value)) {
-      item.classList.add("d-none");
+var filter = function filter(items, currId) {
+  document.querySelector(".searchInput").addEventListener("keyup", function () {
+    var items = document.querySelectorAll(".item");
+    console.log(search.value);
+    items.forEach(function (item) {
+      if (!item.firstElementChild.textContent.includes(search.value)) {
+        item.classList.add("d-none");
+      }
+    });
+
+    if (search.value === "") {
+      container.innerHTML = "";
+      alldata.forEach(function (item) {
+        if (currId === item.userid) displayContent(item);
+      });
     }
   });
-
-  if (search.value === "") {
-    container.innerHTML = "";
-    alldata.forEach(function (item) {
-      displayContent(item);
-    });
-  }
-});
+};
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","./util/axiosconfig.js":"util/axiosconfig.js","./util/indexfireBase":"util/indexfireBase.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -20092,7 +20095,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60265" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52424" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

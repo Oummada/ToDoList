@@ -15,7 +15,7 @@ console.log(alldata);
 const logout = document.querySelector(".logoutbtn");
 logout.addEventListener("click", () => {
   auth.signOut().then(() => {
-    window.location.href = "./auth/login.js";
+    window.location.href = "./auth/login.html";
   });
 });
 
@@ -36,6 +36,8 @@ auth.onAuthStateChanged((user) => {
         if (item.userid === user.uid) displayContent(item);
       });
     });
+
+    filter(alldata, user.uid);
   }
   if (!user) {
     ///if user doesnt exist
@@ -65,7 +67,6 @@ document.querySelector(".addbtn").addEventListener("click", () => {
 
 // function that displays the content
 const displayContent = function (data) {
-  console.log(currentuser, data.userid);
   let html = `
     <li
       class="
@@ -95,6 +96,7 @@ const displayContent = function (data) {
       </div>
     </li>
   `;
+
   container.innerHTML += html;
 };
 
@@ -167,18 +169,21 @@ container.addEventListener("click", (e) => {
 });
 
 //// search
-document.querySelector(".searchInput").addEventListener("keyup", () => {
-  const items = document.querySelectorAll(".item");
-  console.log(search.value);
-  items.forEach((item) => {
-    if (!item.firstElementChild.textContent.includes(search.value)) {
-      item.classList.add("d-none");
+
+const filter = function (items, currId) {
+  document.querySelector(".searchInput").addEventListener("keyup", () => {
+    const items = document.querySelectorAll(".item");
+    console.log(search.value);
+    items.forEach((item) => {
+      if (!item.firstElementChild.textContent.includes(search.value)) {
+        item.classList.add("d-none");
+      }
+    });
+    if (search.value === "") {
+      container.innerHTML = "";
+      alldata.forEach((item) => {
+        if (currId === item.userid) displayContent(item);
+      });
     }
   });
-  if (search.value === "") {
-    container.innerHTML = "";
-    alldata.forEach((item) => {
-      displayContent(item);
-    });
-  }
-});
+};
