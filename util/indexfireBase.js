@@ -23,4 +23,3 @@ const app = firebase.initializeApp(firebaseConfig);
 //exporter notre base de données
 export default app;
 //export the auth app
-

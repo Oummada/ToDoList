@@ -22,7 +22,7 @@ form.addEventListener("submit", (e) => {
   }
   createUserWithEmailAndPassword(auth, email, password).then((cred) => {
     cred.user.displayName = name;
-    console.log(cred.user);
     form.reset();
+    window.location.href = "./auth/login.html";
   });
 });

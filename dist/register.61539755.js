@@ -17790,8 +17790,8 @@ form.addEventListener("submit", function (e) {
 
   (0, _auth.createUserWithEmailAndPassword)(auth, email, password).then(function (cred) {
     cred.user.displayName = name;
-    console.log(cred.user);
     form.reset();
+    window.location.href = "./auth/login.html";
   });
 });
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js","./util/indexfireBase":"util/indexfireBase.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -17822,7 +17822,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52700" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65231" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

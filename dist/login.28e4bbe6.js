@@ -19875,190 +19875,31 @@ var app = firebase.initializeApp(firebaseConfig); //exporter notre base de donnÃ
 var _default = app; //export the auth app
 
 exports.default = _default;
-},{"firebase/app":"node_modules/firebase/app/dist/index.esm.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js"}],"home.js":[function(require,module,exports) {
+},{"firebase/app":"node_modules/firebase/app/dist/index.esm.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js"}],"auth/login.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
 
-var _axiosconfig = _interopRequireDefault(require("./util/axiosconfig.js"));
+var _axiosconfig = _interopRequireDefault(require("../util/axiosconfig.js"));
 
-var _indexfireBase = _interopRequireDefault(require("./util/indexfireBase"));
+var _indexfireBase = _interopRequireDefault(require("../util/indexfireBase.js"));
 
 var _auth = require("firebase/auth");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 var auth = (0, _auth.getAuth)();
-var search = document.querySelector(".searchInput");
-var input = document.querySelector(".input");
-var container = document.querySelector(".list_container");
-var alldata = [];
-console.log(alldata); ////logout
-
-var logout = document.querySelector(".logoutbtn");
-logout.addEventListener("click", function () {
-  auth.signOut().then(function () {
-    window.location.href = "./auth/login.js";
+var form = document.querySelector(".form");
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  var email = form["email"].value;
+  var password = form["password"].value;
+  if (email === "" || password === "") return;
+  (0, _auth.signInWithEmailAndPassword)(auth, email, password).then(function (res) {
+    if (res.user) window.location.href = "../index.html";
   });
-}); ////user activitiy
-
-auth.onAuthStateChanged(function (user) {
-  if (user) {
-    console.log("user logged in"); // currentuser = user.uid;
-    ///getting the data and putting it in alldata state
-
-    _axiosconfig.default.get("/list.json").then(function (_ref) {
-      var data = _ref.data;
-      var thedata = Object.entries(data);
-
-      for (var _i = 0, _thedata = thedata; _i < _thedata.length; _i++) {
-        var _thedata$_i = _slicedToArray(_thedata[_i], 2),
-            key = _thedata$_i[0],
-            value = _thedata$_i[1];
-
-        value.id = key;
-        alldata.push(value);
-      } ///displaying it when page reloads
-
-
-      alldata.forEach(function (item) {
-        if (item.userid === user.uid) displayContent(item);
-      });
-    });
-  }
-
-  if (!user) window.location.href = "./auth/login.js";
-  currentuser = "";
-}); ///add
-
-document.querySelector(".addbtn").addEventListener("click", function () {
-  if (input.value === "") return;
-  var item = {
-    id: String(Date.now()),
-    content: input.value,
-    check: false,
-    userid: currentuser
-  };
-
-  _axiosconfig.default.post("list.json", item).then(function (res) {
-    item.id = res.data.name;
-    alldata.push(item);
-    displayContent(item);
-  }); //display item
-  //emptying input
-
-
-  input.value = "";
-}); // function that displays the content
-
-var displayContent = function displayContent(data) {
-  console.log(currentuser, data.userid);
-  var html = "\n    <li\n      class=\"\n      item\n        list-group-item\n        align-items-center\n        d-flex\n        justify-content-between\n      \"\n    > \n      <div class=\"content\"> ".concat(data.content, "\n      ").concat(data.check === true ? '<hr class="hr">' : "", "\n      </div>\n      <div class=\"d-flex\">\n        <button data-id=").concat(data.id, " class=\"btn delete_btn btn-outline-danger mx-1\">delete</button>\n        <button data-id=").concat(data.id, " class=\"btn updatebtn btn-outline-primary mx-1\">update</button>\n       ").concat(data.check === false ? "<button data-id=".concat(data.id, " class=\"btn btnCheck btn-outline-warning mx-1\">check</button>") : "", "\n        \n      </div>\n    </li>\n  ");
-  container.innerHTML += html;
-}; /// delete btn
-
-
-container.addEventListener("click", function (e) {
-  if (e.target.classList.contains("delete_btn")) {
-    if (window.confirm("are you sure")) {
-      //delete from db
-      var idTarget = e.target.dataset.id;
-
-      _axiosconfig.default.delete("./list/" + idTarget + ".json").then(function (res) {
-        var newTable = alldata.filter(function (item) {
-          return item.id !== idTarget;
-        });
-        alldata = newTable;
-      }); ///delete from view
-
-
-      document.querySelector(".delete_btn[data-id=\"".concat(idTarget, "\"]")).parentElement.parentElement.remove();
-    }
-  }
-}); // update btn
-
-var currentId;
-container.addEventListener("click", function (e) {
-  if (e.target.classList.contains("updatebtn")) {
-    var targetId = e.target.dataset.id;
-    currentId = targetId;
-    document.querySelector(".editOptions").classList.remove("d-none");
-    var currentObject = alldata.find(function (item) {
-      return item.id === currentId;
-    });
-    console.log(currentObject);
-    input.value = currentObject.content;
-  }
 });
-document.querySelector(".cancelbtn").addEventListener("click", function () {
-  input.value = "";
-  document.querySelector(".editOptions").classList.add("d-none");
-});
-document.querySelector(".editbtn").addEventListener("click", function () {
-  var updatedcontent = {
-    id: currentId,
-    content: input.value
-  };
-
-  _axiosconfig.default.put("list/" + currentId + ".json", updatedcontent);
-
-  var newdata = alldata.find(function (item) {
-    return item.id === currentId;
-  });
-  newdata.content = input.value;
-  document.querySelector(".updatebtn[data-id=\"".concat(currentId, "\"]")).parentElement.previousElementSibling.innerHTML = "".concat(newdata.id, " : ").concat(newdata.content);
-  input.value = "";
-}); //// check
-
-container.addEventListener("click", function (e) {
-  if (e.target.classList.contains("btnCheck")) {
-    var elementid = e.target.dataset.id;
-    var data = alldata.find(function (item) {
-      return item.id == elementid;
-    });
-    data.check = true;
-
-    _axiosconfig.default.put("list/" + elementid + ".json", data).then(function (res) {
-      var data = alldata.find(function (item) {
-        return item.id == elementid;
-      });
-      data.check = true;
-    });
-
-    e.target.parentElement.previousElementSibling.innerHTML += '<hr class="hr">';
-    e.target.remove();
-  }
-}); //// search
-
-document.querySelector(".searchInput").addEventListener("keyup", function () {
-  var items = document.querySelectorAll(".item");
-  console.log(search.value);
-  items.forEach(function (item) {
-    if (!item.firstElementChild.textContent.includes(search.value)) {
-      item.classList.add("d-none");
-    }
-  });
-
-  if (search.value === "") {
-    container.innerHTML = "";
-    alldata.forEach(function (item) {
-      displayContent(item);
-    });
-  }
-});
-},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","./util/axiosconfig.js":"util/axiosconfig.js","./util/indexfireBase":"util/indexfireBase.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","../util/axiosconfig.js":"util/axiosconfig.js","../util/indexfireBase.js":"util/indexfireBase.js","firebase/auth":"node_modules/firebase/auth/dist/index.esm.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -20262,5 +20103,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","home.js"], null)
-//# sourceMappingURL=/home.fc46b7b9.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","auth/login.js"], null)
+//# sourceMappingURL=/login.28e4bbe6.js.map

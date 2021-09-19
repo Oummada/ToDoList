@@ -1,21 +1,44 @@
 "use strict";
 import "regenerator-runtime/runtime";
-
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-// const auth = getAuth();
+import axios from "./util/axiosconfig.js";
+import app from "./util/indexfireBase";
+import { getAuth } from "firebase/auth";
+const auth = getAuth();
+const search = document.querySelector(".searchInput");
+const input = document.querySelector(".input");
+const container = document.querySelector(".list_container");
+let alldata = [];
+console.log(alldata);
 
 ////logout
 const logout = document.querySelector(".logoutbtn");
 logout.addEventListener("click", () => {
-  alert("hi sisters");
+  auth.signOut().then(() => {
+    window.location.href = "./auth/login.js";
+  });
 });
 
-import axios from "./util/axiosconfig.js";
-const search = document.querySelector(".searchInput");
-const input = document.querySelector(".input");
-const container = document.querySelector(".list_container");
-
-let alldata = [];
+////user activitiy
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("user logged in");
+    // currentuser = user.uid;
+    ///getting the data and putting it in alldata state
+    axios.get("/list.json").then(({ data }) => {
+      const thedata = Object.entries(data);
+      for (const [key, value] of thedata) {
+        value.id = key;
+        alldata.push(value);
+      }
+      ///displaying it when page reloads
+      alldata.forEach((item) => {
+        if (item.userid === user.uid) displayContent(item);
+      });
+    });
+  }
+  if (!user) window.location.href = "./auth/login.js";
+  currentuser = "";
+});
 
 ///add
 document.querySelector(".addbtn").addEventListener("click", () => {
@@ -24,11 +47,12 @@ document.querySelector(".addbtn").addEventListener("click", () => {
     id: String(Date.now()),
     content: input.value,
     check: false,
+    userid: currentuser,
   };
   axios.post("list.json", item).then((res) => {
-    console.log(res.data.name);
     item.id = res.data.name;
     alldata.push(item);
+
     displayContent(item);
   });
   //display item
@@ -36,21 +60,9 @@ document.querySelector(".addbtn").addEventListener("click", () => {
   input.value = "";
 });
 
-///getting the data and putting it in alldata state
-axios.get("/list.json").then(({ data }) => {
-  const thedata = Object.entries(data);
-  for (const [key, value] of thedata) {
-    value.id = key;
-    alldata.push(value);
-  }
-  ///displaying it when page reloads
-  alldata.forEach((item) => {
-    displayContent(item);
-  });
-});
-
 // function that displays the content
 const displayContent = function (data) {
+  console.log(currentuser, data.userid);
   let html = `
     <li
       class="
